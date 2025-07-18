@@ -67,3 +67,56 @@ const initialTasks = [
  * @type {Task[]}
  */
 let currentTasksState = [...initialTasks];
+
+/**
+ * Renders all tasks from the global `currentTasksState` array into their respective Kanban board columns.
+ * Clears existing tasks before rendering to prevent duplicates.
+ * @returns {void}
+ */
+function renderTasks() {
+  // Clear existing tasks from all containers
+  document.querySelectorAll('.tasks-container').forEach(container => {
+    container.innerHTML = '';
+  });
+
+  currentTasksState.forEach(task => {
+    const taskElement = createTaskElement(task);
+    const targetContainer = document.querySelector(`.column-div[data-status="${task.status}"] .tasks-container`);
+    if (targetContainer) {
+      targetContainer.appendChild(taskElement);
+    }
+  });
+  updateTaskCountDisplays();
+}
+
+/**
+ * Creates a DOM element for a given task.
+ * Adds a click event listener to open the task modal.
+ * @param {Task} task - The task object to create an element for.
+ * @returns {HTMLDivElement} The created task DOM element.
+ */
+function createTaskElement(task) {
+  const taskDiv = document.createElement('div');
+  taskDiv.className = 'task-div';
+  taskDiv.textContent = task.title;
+  taskDiv.dataset.taskId = task.id;
+  taskDiv.addEventListener('click', () => openTaskModal(task));
+  return taskDiv;
+}
+
+/**
+ * Updates the displayed task count for each column header.
+ * Iterates through each status column and updates the count based on the currentTasksState.
+ * @returns {void}
+ */
+function updateTaskCountDisplays() {
+  const statuses = ['todo', 'doing', 'done'];
+  statuses.forEach(status => {
+    const count = currentTasksState.filter(task => task.status === status).length;
+    const headerElement = document.querySelector(`.column-div[data-status="${status}"] .columnHeader`);
+    if (headerElement) {
+      const currentText = headerElement.textContent.split('(')[0].trim();
+      headerElement.textContent = `${currentText} (${count})`;
+    }
+  });
+}
