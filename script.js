@@ -120,3 +120,43 @@ function updateTaskCountDisplays() {
     }
   });
 }
+
+/**
+ * Opens a modal for adding a new task or editing an existing one.
+ * Dynamically creates and configures the modal, input fields, and action buttons.
+ * If a task is provided, the modal is pre-filled for editing; otherwise, it is blank for adding a new task.
+ * @param {Task|null} task - The task object to edit, or `null` if adding a new task.
+ * @returns {void}
+ */
+function openTaskModal(task = null) {
+  // Create modal backdrop (overlay)
+  const modalBackdrop = document.createElement('div');
+  modalBackdrop.className = 'modal-backdrop';
+  modalBackdrop.id = 'taskModalBackdrop';
+
+  // Create modal container
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+
+  // Create close button for modal
+  const closeButton = document.createElement('button');
+  closeButton.className = 'close-button';
+  closeButton.innerHTML = '&times;';
+  closeButton.addEventListener('click', () => modalBackdrop.remove());
+
+  // Modal title: changes depending on add/edit mode
+  const modalTitle = document.createElement('h2');
+  modalTitle.textContent = task ? 'Edit Task' : 'Add New Task';
+
+  // Modal content container
+  const modalContent = document.createElement('div');
+  modalContent.className = 'modal-content';
+
+  // Title input field
+  const titleLabel = document.createElement('label');
+  titleLabel.textContent = 'Title';
+  const titleInput = document.createElement('input');
+  titleInput.type = 'text';
+  titleInput.id = 'modalTaskTitle';
+  titleInput.value = task ? task.title : '';
+  titleInput.placeholder = 'e.g. Take chilled break';
