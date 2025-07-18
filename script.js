@@ -234,3 +234,32 @@ function openTaskModal(task = null) {
     });
     actionButtonsDiv.appendChild(deleteButton);
   }
+// Append all fields and buttons to modal content
+  modalContent.appendChild(modalTitle);
+  modalContent.appendChild(titleLabel);
+  modalContent.appendChild(titleInput);
+  modalContent.appendChild(descriptionLabel);
+  modalContent.appendChild(descriptionTextarea);
+  modalContent.appendChild(statusLabel);
+  modalContent.appendChild(statusSelect);
+  modalContent.appendChild(actionButtonsDiv);
+
+  // Assemble modal and backdrop
+  modal.appendChild(closeButton);
+  modal.appendChild(modalContent);
+  modalBackdrop.appendChild(modal);
+
+  // Display modal on the page
+  document.body.appendChild(modalBackdrop);
+}
+
+/**
+ * Updates the global `currentTasksState` array based on changes to a specific task.
+ * This function ensures that the `initialTasks` array remains immutable.
+ * It creates a new array for `currentTasksState` to reflect the changes.
+ * @param {number} id - The ID of the task to update.
+ * @param {string} newTitle - The new title for the task.
+ * @param {string} newDescription - The new description for the task.
+ * @param {string} newStatus - The new status for the task.
+ * @returns {void}
+ */
