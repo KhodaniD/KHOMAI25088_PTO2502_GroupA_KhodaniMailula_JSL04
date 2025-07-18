@@ -263,3 +263,63 @@ function openTaskModal(task = null) {
  * @param {string} newStatus - The new status for the task.
  * @returns {void}
  */
+
+function updateTaskState(id, newTitle, newDescription, newStatus) {
+  currentTasksState = currentTasksState.map(task => {
+    if (task.id === id) {
+      return {
+        ...task,
+        title: newTitle,
+        description: newDescription,
+        status: newStatus,
+      };
+    }
+    return task;
+  });
+  renderTasks();
+}
+
+/**
+ * Adds a new task to the `currentTasksState` array.
+ * Assigns a unique ID and then re-renders the tasks.
+ * @param {string} title - The title of the new task.
+ * @param {string} description - The description of the new task.
+ * @param {string} status - The status of the new task.
+ * @returns {void}
+ */
+function addNewTask(title, description, status) {
+  const newId = currentTasksState.length > 0 ? Math.max(...currentTasksState.map(t => t.id)) + 1 : 1;
+  const newTask = {
+    id: newId,
+    title,
+    description,
+    status,
+  };
+  currentTasksState = [...currentTasksState, newTask];
+  renderTasks();
+}
+
+/**
+ * Deletes a task from the `currentTasksState` array by its ID.
+ * Then re-renders the tasks.
+ * @param {number} id - The ID of the task to delete.
+ * @returns {void}
+ */
+function deleteTask(id) {
+  currentTasksState = currentTasksState.filter(task => task.id !== id);
+  renderTasks();
+}
+
+/**
+ * Initializes the application when the DOM is fully loaded.
+ * Calls `renderTasks` to display the initial set of tasks.
+ * Attaches event listener for the "Add New Task" button.
+ * @returns {void}
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTasks();
+  const addTaskButton = document.getElementById('add-new-task-btn');
+  if (addTaskButton) {
+    addTaskButton.addEventListener('click', () => openTaskModal(null));
+  }
+});
