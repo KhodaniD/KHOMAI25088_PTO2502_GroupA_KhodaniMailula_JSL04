@@ -160,3 +160,33 @@ function openTaskModal(task = null) {
   titleInput.id = 'modalTaskTitle';
   titleInput.value = task ? task.title : '';
   titleInput.placeholder = 'e.g. Take chilled break';
+  
+// Description textarea
+  const descriptionLabel = document.createElement('label');
+  descriptionLabel.textContent = 'Description';
+  const descriptionTextarea = document.createElement('textarea');
+  descriptionTextarea.id = 'modalTaskDescription';
+  descriptionTextarea.value = task ? task.description : '';
+  descriptionTextarea.placeholder = 'e.g Pet your dog, have a cup of coffee, dance to your favourite song and come back to crush this challenge.';
+
+  // Status dropdown
+  const statusLabel = document.createElement('label');
+  statusLabel.textContent = 'Status';
+  const statusSelect = document.createElement('select');
+  statusSelect.id = 'modalTaskStatus';
+
+  // Populate dropdown options for status
+  const statuses = ['todo', 'doing', 'done'];
+  statuses.forEach(status => {
+    const option = document.createElement('option');
+    option.value = status;
+    option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    // Pre-select option based on current task status or default to 'todo'
+    if (task && status === task.status) {
+      option.selected = true;
+    } else if (!task && status === 'todo') {
+      option.selected = true;
+    }
+    statusSelect.appendChild(option);
+  });
+
